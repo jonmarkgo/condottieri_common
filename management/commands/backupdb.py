@@ -50,7 +50,7 @@ class Command(BaseCommand):
             args += ["--port=%s" % self.port]
         args += [self.db]
 
-        os.system('mysqldump %s > %s' % (' '.join(args), outfile))
+        os.system('mysqldump %s --add-drop-table > %s' % (' '.join(args), outfile))
 
     def do_postgresql_backup(self, outfile):
         args = []
