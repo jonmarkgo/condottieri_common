@@ -60,5 +60,5 @@ class Command(NoArgsCommand):
 		if logging:
 			logging.info(msg)
 		else:
-			print msg
+			print(msg)
 

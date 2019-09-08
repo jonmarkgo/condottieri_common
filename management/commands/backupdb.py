@@ -26,17 +26,17 @@ class Command(BaseCommand):
 
         backup_dir = os.path.join(os.path.abspath(os.getcwd()), "..", "backups")
         if not os.path.exists(backup_dir):
-            os.makedirs(backup_dir, 0700)
+            os.makedirs(backup_dir, 0o700)
         outfile = os.path.join(backup_dir, 'backup_%s.sql' % time.strftime('%y%m%d%S'))
 
         if self.engine == 'django.db.backends.mysql':
-            print 'Doing Mysql backup to database %s into %s' % (self.db, outfile)
+            print('Doing Mysql backup to database %s into %s' % (self.db, outfile))
             self.do_mysql_backup(outfile)
         elif self.engine == 'django.db.backends.postgresql_psycopg2':
-            print 'Doing Postgresql backup to database %s into %s' % (self.db, outfile)
+            print('Doing Postgresql backup to database %s into %s' % (self.db, outfile))
             self.do_postgresql_backup(outfile)
         else:
-            print 'Backup in %s engine not implemented' % self.engine
+            print('Backup in %s engine not implemented' % self.engine)
 
     def do_mysql_backup(self, outfile):
         args = []
