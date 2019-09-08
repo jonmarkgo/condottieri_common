@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from django.core.management.base import NoArgsCommand, CommandError
+from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 
 if "jogging" in settings.INSTALLED_APPS:
@@ -16,7 +16,7 @@ deval = settings.SCORE_DEVALUATION
 threshold = timedelta(30 * settings.DEVALUATION_MONTHS)
 
 
-class Command(NoArgsCommand):
+class Command(BaseCommand):
 	"""
 	This command calculates the weighted scores of all the profiles.
 	"""
