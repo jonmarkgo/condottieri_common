@@ -25,32 +25,31 @@ from django.conf import settings
 
 from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 
-if "jogging" in settings.INSTALLED_APPS:
-	from jogging import logging
-else:
-	logging = None
+import logging
+logger = logging.getLogger(__name__)
 
 from machiavelli.signals import game_finished
 
 class Server(models.Model):
-	""" Defines core attributes for the whole site """
-	ranking_last_update = models.DateTimeField()
-	ranking_outdated = models.BooleanField(default=False)
+    """ Defines core attributes for the whole site """
+    ranking_last_update = models.DateTimeField()
+    ranking_outdated = models.BooleanField(default=False)
 
-	def __str__(self):
-		return "Server %s" % self.pk
+    def __str__(self):
+        return "Server %s" % self.pk
+
+    def outdate_ranking(self):
+        self.ranking_outdated = True
+        self.save()
 
 def outdate_ranking(sender, **kwargs):
-	try:
-		server = Server.objects.get()
-	except MultipleObjectsReturned:
-		if logging:
-			logging.error("Multiple servers found")
-	except ObjectDoesNotExist:
-		if logging:
-			logging.error("No configured server")
-	else:
-		server.ranking_outdated = True
-		server.save()
+    try:
+        server = Server.objects.get()
+    except MultipleObjectsReturned:
+        logger.error("Multiple servers found")
+    except ObjectDoesNotExist:
+        logger.error("No configured server")
+    else:
+        server.outdate_ranking()
 
 game_finished.connect(outdate_ranking)
